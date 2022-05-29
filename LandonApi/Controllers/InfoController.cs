@@ -1,29 +1,31 @@
-﻿using System;
-using LandonApi.Models;
+﻿using LandonApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LandonApi.Controllers
 {
-	[Route("/[controller]")]
-	[ApiController]
-	public class InfoController : ControllerBase
-	{
-		private readonly HotelInfo hotelInfo;
+    [Route("/[controller]")]
+    [ApiController]
+    public class InfoController : ControllerBase
+    {
+        private readonly HotelInfo _hotelInfo;
 
         public InfoController(IOptions<HotelInfo> hotelInfoWrapper)
         {
-			hotelInfo = hotelInfoWrapper.Value;
+            _hotelInfo = hotelInfoWrapper.Value;
         }
 
-		[HttpGet(Name = nameof(GetInfo))]
-		[ProducesResponseType(200)]
-		public ActionResult<HotelInfo> GetInfo()
+        [HttpGet(Name = nameof(GetInfo))]
+        [ProducesResponseType(200)]
+        public ActionResult<HotelInfo> GetInfo()
         {
-			hotelInfo.Href = Url.Link(nameof(GetInfo), null);
+            _hotelInfo.Href = Url.Link(nameof(GetInfo), null);
 
-			return hotelInfo;
+            return _hotelInfo;
         }
-	}
+    }
 }
-

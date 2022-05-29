@@ -1,8 +1,11 @@
-﻿using System;
-using LandonApi.Models;
+﻿using LandonApi.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LandonApi.Filters
 {
@@ -26,7 +29,7 @@ namespace LandonApi.Filters
             }
             else
             {
-                error.Message = "A server error occured.";
+                error.Message = "A server error occurred.";
                 error.Detail = context.Exception.Message;
             }
 
@@ -37,4 +40,3 @@ namespace LandonApi.Filters
         }
     }
 }
-

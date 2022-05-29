@@ -20,6 +20,10 @@ namespace LandonApi
             host.Run();
         }
 
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>();
+        
         public static void InitializeDatabase(IWebHost host)
         {
             using (var scope = host.Services.CreateScope())
@@ -33,13 +37,9 @@ namespace LandonApi
                 catch (Exception ex)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occured seeding the database.");
+                    logger.LogError(ex, "An error occurred seeding the database.");
                 }
             }
         }
-
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
     }
 }

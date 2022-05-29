@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;    
+using Microsoft.EntityFrameworkCore;
 using NSwag.AspNetCore;
 using LandonApi.Services;
 using AutoMapper;
@@ -33,45 +33,41 @@ namespace LandonApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<HotelInfo>(Configuration.GetSection("Info"));
+            services.Configure<HotelInfo>(
+                Configuration.GetSection("Info"));
 
             services.AddScoped<IRoomService, DefaultRoomService>();
 
-            //use in-memory database for quick dev and testing
-            //TODO: swap out for a real database in production
+            // Use in-memory database for quick dev and testing
+            // TODO: Swap out for a real database in production
             services.AddDbContext<HotelApiDbContext>(
-                options =>
-                {
-                    options.UseInMemoryDatabase("landondb");
-                });
+                options => options.UseInMemoryDatabase("landondb"));
 
-            services.AddMvc(options =>
-            {
-                options.Filters.Add<JsonExceptionFilter>();
-                options.Filters.Add<RequireHttpsOrCloseAttribute>();
-            })
+            services
+                .AddMvc(options =>
+                {
+                    options.Filters.Add<JsonExceptionFilter>();
+                    options.Filters
+                        .Add<RequireHttpsOrCloseAttribute>();
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddRouting(options => options.LowercaseUrls = true);
+            services
+                .AddRouting(options => options.LowercaseUrls = true);
 
             services.AddApiVersioning(options =>
             {
                 options.DefaultApiVersion = new ApiVersion(1, 0);
-                options.ApiVersionReader = new MediaTypeApiVersionReader();
+                options.ApiVersionReader
+                    = new MediaTypeApiVersionReader();
                 options.AssumeDefaultVersionWhenUnspecified = true;
                 options.ReportApiVersions = true;
-                options.ApiVersionSelector = new CurrentImplementationApiVersionSelector(options);
+                options.ApiVersionSelector
+                     = new CurrentImplementationApiVersionSelector(options);
             });
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowMyApp", policy => policy.AllowAnyOrigin());
-            });
-
-            services.AddAutoMapper(options =>
-            {
-                options.AddProfile<MappingProfile>();
-            });
+            services.AddAutoMapper(
+                options => options.AddProfile<MappingProfile>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,15 +79,15 @@ namespace LandonApi
 
                 app.UseSwaggerUi3WithApiExplorer(options =>
                 {
-                    options.GeneratorSettings.DefaultPropertyNameHandling = NJsonSchema.PropertyNameHandling.CamelCase;
+                    options.GeneratorSettings
+                        .DefaultPropertyNameHandling
+                    = NJsonSchema.PropertyNameHandling.CamelCase;
                 });
             }
             else
             {
                 app.UseHsts();
             }
-
-            app.UseCors("AllowMyApp");
 
             app.UseMvc();
         }

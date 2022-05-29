@@ -5,29 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-    <Folder Include="Models\" />
-    <Folder Include="Filters\" />
-    <Folder Include="Services\" />
-    <Folder Include="Infrastructure\" />
+    <Compile Remove="wwwroot\**" />
+    <Content Remove="wwwroot\**" />
+    <EmbeddedResource Remove="wwwroot\**" />
+    <None Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="NSwag.AspNetCore" Version="11.17.21" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="2.3.0" />
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="2.3.0" />
+    <PackageReference Include="NSwag.AspNetCore" Version="11.17.21" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="NSwag.AspNetCore" />
-    <None Remove="Microsoft.AspNetCore.Mvc.Versioning" />
-    <None Remove="Models\" />
-    <None Remove="Filters\" />
-    <None Remove="Services\" />
-    <None Remove="AutoMapper" />
-    <None Remove="Infrastructure\" />
-    <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
-  </ItemGroup>
 </Project>
