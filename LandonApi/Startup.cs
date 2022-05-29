@@ -31,6 +31,7 @@ namespace LandonApi
             services.AddMvc(options =>
             {
                 options.Filters.Add<JsonExceptionFilter>();
+                options.Filters.Add<RequireHttpsOrCloseAttribute>();
             })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -43,6 +44,11 @@ namespace LandonApi
                 options.AssumeDefaultVersionWhenUnspecified = true;
                 options.ReportApiVersions = true;
                 options.ApiVersionSelector = new CurrentImplementationApiVersionSelector(options);
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowMyApp", policy => policy.AllowAnyOrigin());
             });
         }
 
@@ -63,7 +69,8 @@ namespace LandonApi
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors("AllowMyApp");
+
             app.UseMvc();
         }
     }
