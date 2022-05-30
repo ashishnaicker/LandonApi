@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LandonApi.Infrastructure;
+using LandonApi.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,22 +15,27 @@ namespace LandonApi.Controllers
     {
         [HttpGet(Name = nameof(GetRoot))]
         [ProducesResponseType(200)]
+        [ProducesResponseType(304)]
+        [ResponseCache(CacheProfileName = "Static")]
+        [Etag]
         public IActionResult GetRoot()
         {
-            var response = new
+            var response = new RootResponse
             {
-                href = Url.Link(nameof(GetRoot), null),
-                rooms = new
-                {
-                    href = Url.Link(
-                        nameof(RoomsController.GetRooms), null)
-                },
-                info = new
-                {
-                    href = Url.Link(
-                        nameof(InfoController.GetInfo), null)
-                }
+                Self = Link.To(nameof(GetRoot)),
+                Rooms = Link.ToCollection(nameof(RoomsController.GetAllRooms)),
+                Info = Link.To(nameof(InfoController.GetInfo)),
+                Users = Link.ToCollection(nameof(UsersController.GetVisibleUsers)),
+                Token = FormMetadata.FromModel(
+                    new PasswordGrantForm(),
+                    Link.ToForm(nameof(TokenController.TokenExchange),
+                                null, relations: Form.Relation))
             };
+
+            if (!Request.GetEtagHandler().NoneMatch(response))
+            {
+                return StatusCode(304, response);
+            }
 
             return Ok(response);
         }

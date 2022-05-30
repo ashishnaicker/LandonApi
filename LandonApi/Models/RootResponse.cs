@@ -7,19 +7,15 @@ using System.Threading.Tasks;
 
 namespace LandonApi.Models
 {
-    public class Room : Resource, IEtaggable
+    public class RootResponse : Resource, IEtaggable
     {
-        [Sortable]
-        [SearchableString]
-        public string Name { get; set; }
+        public Link Info { get; set; }
 
-        [Sortable(Default = true)]
-        [SearchableDecimal]
-        public decimal Rate { get; set; }
+        public Link Rooms { get; set; }
 
-        public Form Book { get; set; }
+        public Link Users { get; set; }
 
-        public Link Openings { get; set; }
+        public Form Token { get; set; }
 
         public string GetEtag()
         {
