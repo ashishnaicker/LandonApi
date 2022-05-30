@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace LandonApi.Models
 {
-    public abstract class Resource : Link
+    public abstract class Resource
     {
-        [JsonIgnore]
-        public Link Self { get; set; }
+        [JsonProperty(Order = -2)]
+        public string Href { get; set; }
     }
 }

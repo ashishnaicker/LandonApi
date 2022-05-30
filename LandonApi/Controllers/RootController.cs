@@ -1,5 +1,4 @@
-﻿using LandonApi.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +15,19 @@ namespace LandonApi.Controllers
         [ProducesResponseType(200)]
         public IActionResult GetRoot()
         {
-            var response = new RootResponse
+            var response = new
             {
-                Self = Link.To(nameof(GetRoot)),
-                Rooms = Link.To(nameof(RoomsController.GetRooms)),
-                Info = Link.To(nameof(InfoController.GetInfo))
+                href = Url.Link(nameof(GetRoot), null),
+                rooms = new
+                {
+                    href = Url.Link(
+                        nameof(RoomsController.GetRooms), null)
+                },
+                info = new
+                {
+                    href = Url.Link(
+                        nameof(InfoController.GetInfo), null)
+                }
             };
 
             return Ok(response);
